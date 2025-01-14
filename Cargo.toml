@@ -1,0 +1,14 @@
+[workspace]
+resolver = "2"
+members = [
+    "modules/celui_core",
+    "modules/celui_renderer",
+
+    "modules/dev",
+]
+
+[workspace.package]
+version = "0.1.0"
+authors = ["Mohsen Rad (🌱) <irregular.celery@gmail.com>"]
+edition = "2021"
+license = "MIT"

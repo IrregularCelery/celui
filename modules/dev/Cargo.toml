@@ -1,0 +1,9 @@
+[package]
+name = "dev"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+celui = { path = "../celui_core/" }
