@@ -16,9 +16,9 @@ Celui (short for **Celery UI**, and pronounced playfully as _"Celewy"_ :D) is a 
 
 To lay the groundwork for these goals, the workspace is organized into multiple modules:
 
-- **[celui_core](/tree/master/modules/celui_core)**: The heart of the system. Provides essential abstractions, utilities, and the core foundation.
-- **[celui_renderer](/tree/master/modules/celui_renderer)**: Handles the rendering of primitives like triangles, rectangles, circles, and text.
-- **[dev](/tree/master/modules/dev)**: A binary module used for experimenting with the library and testing in general.
+- **[celui_core](/modules/celui_core/)**: The heart of the system. Provides essential abstractions, utilities, and the core foundation.
+- **[celui_renderer](/modules/celui_renderer/)**: Handles the rendering of primitives like triangles, rectangles, circles, and text.
+- **[dev](/modules/dev/)**: A binary module used for experimenting with the library and testing in general.
 
 You can use the modules individually or combine them based on your project's needs. However, the core module contains most of what'll you need. 🧩
 
@@ -35,4 +35,4 @@ cd celui
 
 ## License 📜
 
-**Celui** is released under the [MIT License](/blob/master/LICENSE).
+**Celui** is released under the [MIT License](/LICENSE).
