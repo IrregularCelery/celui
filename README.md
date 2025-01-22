@@ -18,6 +18,7 @@ To lay the groundwork for these goals, the workspace is organized into multiple 
 
 - **[celui_core](/modules/celui_core/)**: The heart of the system. Provides essential abstractions, utilities, and the core foundation.
 - **[celui_renderer](/modules/celui_renderer/)**: Handles the rendering of primitives like triangles, rectangles, circles, and text.
+- **[celui_math](/modules/celui_math/)**: Provides mathematical utilities and data structures, such as vectors, matrices, and geometric functions.
 - **[dev](/modules/dev/)**: A binary module used for experimenting with the library and testing in general.
 
 You can use the modules individually or combine them based on your project's needs. However, the core module contains most of what'll you need. 🧩
