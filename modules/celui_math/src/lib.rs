@@ -9,3 +9,6 @@ pub use color::*;
 pub use matrix::*;
 pub use rect::*;
 pub use vector::*;
+
+#[cfg(feature = "std")]
+mod std;

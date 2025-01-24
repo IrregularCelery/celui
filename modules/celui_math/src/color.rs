@@ -27,11 +27,3 @@ impl Color {
     pub const GREEN: Self = Self::from_rgb(0, 255, 0);
     pub const BLUE: Self = Self::from_rgb(0, 0, 255);
 }
-
-#[cfg(feature = "std")]
-impl std::fmt::Debug for Color {
-    #[inline(always)]
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "Color({}, {}, {}, {})", self.r, self.g, self.b, self.a)
-    }
-}

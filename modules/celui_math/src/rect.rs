@@ -19,15 +19,3 @@ impl Rect {
         }
     }
 }
-
-#[cfg(feature = "std")]
-impl std::fmt::Debug for Rect {
-    #[inline(always)]
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(
-            f,
-            "Rect({}, {}, {}, {})",
-            self.x, self.y, self.width, self.height
-        )
-    }
-}

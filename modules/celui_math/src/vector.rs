@@ -63,14 +63,6 @@ impl Div<f32> for Vec2 {
     }
 }
 
-#[cfg(feature = "std")]
-impl std::fmt::Debug for Vec2 {
-    #[inline(always)]
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "Vec2({}, {})", self.x, self.y)
-    }
-}
-
 // --------------------------------- Vec3 ---------------------------------- //
 
 #[derive(Clone, Copy, PartialEq)]
@@ -136,14 +128,6 @@ impl Div<f32> for Vec3 {
             y: self.y / scalar,
             z: self.z / scalar,
         }
-    }
-}
-
-#[cfg(feature = "std")]
-impl std::fmt::Debug for Vec3 {
-    #[inline(always)]
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "Vec3({}, {}, {})", self.x, self.y, self.z)
     }
 }
 
@@ -217,13 +201,5 @@ impl Div<f32> for Vec4 {
             z: self.z / scalar,
             w: self.w / scalar,
         }
-    }
-}
-
-#[cfg(feature = "std")]
-impl std::fmt::Debug for Vec4 {
-    #[inline(always)]
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "Vec4({}, {}, {}, {})", self.x, self.y, self.z, self.w)
     }
 }

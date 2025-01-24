@@ -13,14 +13,6 @@ impl Mat2 {
     }
 }
 
-#[cfg(feature = "std")]
-impl std::fmt::Debug for Mat2 {
-    #[inline(always)]
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "Mat2({:?})", self.elements)
-    }
-}
-
 // --------------------------------- Mat3 ---------------------------------- //
 
 pub struct Mat3 {
@@ -33,14 +25,6 @@ impl Mat3 {
         Self {
             elements: [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0],
         }
-    }
-}
-
-#[cfg(feature = "std")]
-impl std::fmt::Debug for Mat3 {
-    #[inline(always)]
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "Mat3({:?})", self.elements)
     }
 }
 
@@ -58,13 +42,5 @@ impl Mat4 {
                 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0,
             ],
         }
-    }
-}
-
-#[cfg(feature = "std")]
-impl std::fmt::Debug for Mat4 {
-    #[inline(always)]
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "Mat4({:?})", self.elements)
     }
 }
