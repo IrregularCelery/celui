@@ -1,3 +1,17 @@
+// -------------------------------- std.rs --------------------------------- //
+
+//! Support functions and utility methods for a standard (`std`) environment.
+//!
+//! This file is included in the build *only* when the `std` feature is enabled.
+//! If the `std` feature is *not* enabled, this file will be excluded from compilation.
+//!
+//! To enable standard library support, add the `std` feature to your `Cargo.toml`:
+//!
+//! ```toml
+//! [features]
+//! std = []
+//! ```
+
 // -------------------------------- Color ---------------------------------- //
 
 impl std::fmt::Debug for crate::Color {

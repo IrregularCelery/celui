@@ -1,3 +1,11 @@
+// ------------------------------- rect.rs --------------------------------- //
+
+//! Rectangle representation and geometric/spatial utilities.
+//!
+//! Defines the `Rect` struct, providing a foundation for calculating various
+//! geometric properties and spatial relationships of rectangles, such as
+//! intersection, containment, and more.
+
 // --------------------------------- Rect ---------------------------------- //
 
 #[derive(Clone, Copy, PartialEq)]

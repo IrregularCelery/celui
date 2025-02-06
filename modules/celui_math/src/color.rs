@@ -1,3 +1,10 @@
+// ------------------------------- color.rs -------------------------------- //
+
+//! Color representation and manipulation.
+//!
+//! This module defines structures and functions for working with colors,
+//! including different color formats (e.g., RGB, HSL, HEX) and related operations.
+
 // -------------------------------- Color ---------------------------------- //
 
 #[derive(Clone, Copy, PartialEq)]

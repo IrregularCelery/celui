@@ -1,3 +1,11 @@
+// ------------------------------ vector.rs -------------------------------- //
+
+//! N-dimensional vector representation and operations.
+//!
+//! This module provides a `Vector` struct for mathematical operations.
+//! It supports creation, access, modification, and common vector arithmetic
+//! like addition, subtraction, scalar multiplication, dot product, and normalization.
+
 use core::ops::{Add, Div, Mul, Sub};
 
 // --------------------------------- Vec2 ---------------------------------- //
