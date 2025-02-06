@@ -6,8 +6,12 @@ edition.workspace = true
 license.workspace = true
 
 [features]
-std = ["celui_math/std"]
+std = [
+    "celui_sys/std",
+    "celui_math/std"
+]
 
 [dependencies]
-celui_renderer = { path = "../celui_renderer/" }
+celui_sys = { path = "../celui_sys/" }
 celui_math = { path = "../celui_math/" }
+celui_renderer = { path = "../celui_renderer/" }
