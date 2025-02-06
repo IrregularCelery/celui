@@ -14,33 +14,20 @@
 
 // ------------------------------- alloc.rs -------------------------------- //
 
-pub mod alloc {
+#[no_mangle]
+unsafe extern "C" fn _alloc_raw(size: usize, align: usize) -> *mut u8 {
+    let layout = std::alloc::Layout::from_size_align_unchecked(size, align);
 
-    #[inline(always)]
-    pub fn alloc<T>() -> *mut T {
-        let size = core::mem::size_of::<T>();
-        let align = core::mem::align_of::<T>();
+    std::alloc::alloc(layout)
+}
 
-        unsafe {
-            let layout = std::alloc::Layout::from_size_align_unchecked(size, align);
-
-            std::alloc::alloc(layout) as *mut T
-        }
+#[no_mangle]
+unsafe extern "C" fn _dealloc_raw(ptr: *mut u8, size: usize, align: usize) {
+    if ptr.is_null() {
+        return;
     }
 
-    #[inline(always)]
-    pub fn dealloc<T>(ptr: *mut T) {
-        if ptr.is_null() {
-            return;
-        }
+    let layout = std::alloc::Layout::from_size_align_unchecked(size, align);
 
-        let size = core::mem::size_of::<T>();
-        let align = core::mem::align_of::<T>();
-
-        unsafe {
-            let layout = std::alloc::Layout::from_size_align_unchecked(size, align);
-
-            std::alloc::dealloc(ptr as *mut u8, layout);
-        }
-    }
+    std::alloc::dealloc(ptr, layout);
 }
