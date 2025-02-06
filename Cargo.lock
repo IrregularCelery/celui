@@ -8,6 +8,7 @@ version = "0.1.0"
 dependencies = [
  "celui_math",
  "celui_renderer",
+ "celui_sys",
 ]
 
 [[package]]
@@ -16,6 +17,10 @@ version = "0.1.0"
 
 [[package]]
 name = "celui_renderer"
+version = "0.1.0"
+
+[[package]]
+name = "celui_sys"
 version = "0.1.0"
 
 [[package]]

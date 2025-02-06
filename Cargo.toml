@@ -2,6 +2,7 @@
 resolver = "2"
 members = [
     "modules/celui_core",
+    "modules/celui_sys",
     "modules/celui_math",
     "modules/celui_renderer",
 
