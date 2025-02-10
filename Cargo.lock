@@ -12,6 +12,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "celui_collections"
+version = "0.1.0"
+
+[[package]]
 name = "celui_math"
 version = "0.1.0"
 
