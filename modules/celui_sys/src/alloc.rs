@@ -10,7 +10,7 @@
 // ------------------------------- Allocate ------------------------------- //
 
 #[inline(always)]
-pub fn alloc<T>() -> *mut T {
+pub unsafe fn alloc<T>() -> *mut T {
     let size = core::mem::size_of::<T>();
     let align = core::mem::align_of::<T>();
 
@@ -18,7 +18,7 @@ pub fn alloc<T>() -> *mut T {
 }
 
 #[inline(always)]
-pub fn alloc_many<T>(count: usize) -> *mut T {
+pub unsafe fn alloc_many<T>(count: usize) -> *mut T {
     if count < 1 {
         return core::ptr::null_mut();
     }
@@ -32,7 +32,7 @@ pub fn alloc_many<T>(count: usize) -> *mut T {
 // ------------------------------ Deallocate ------------------------------- //
 
 #[inline(always)]
-pub fn dealloc<T>(ptr: *mut T) {
+pub unsafe fn dealloc<T>(ptr: *mut T) {
     if ptr.is_null() {
         return;
     }
@@ -44,7 +44,7 @@ pub fn dealloc<T>(ptr: *mut T) {
 }
 
 #[inline(always)]
-pub fn dealloc_many<T>(ptr: *mut T, count: usize) {
+pub unsafe fn dealloc_many<T>(ptr: *mut T, count: usize) {
     if ptr.is_null() || count < 1 {
         return;
     }
