@@ -6,8 +6,6 @@
 //! It supports creation, access, modification, and common vector arithmetic
 //! like addition, subtraction, scalar multiplication, dot product, and normalization.
 
-use core::ops::{Add, Div, Mul, Sub};
-
 // --------------------------------- Vec2 ---------------------------------- //
 
 #[derive(Clone, Copy, PartialEq)]
@@ -23,7 +21,7 @@ impl Vec2 {
     }
 }
 
-impl Add for Vec2 {
+impl core::ops::Add for Vec2 {
     type Output = Self;
 
     #[inline(always)]
@@ -35,7 +33,7 @@ impl Add for Vec2 {
     }
 }
 
-impl Sub for Vec2 {
+impl core::ops::Sub for Vec2 {
     type Output = Self;
 
     #[inline(always)]
@@ -47,7 +45,7 @@ impl Sub for Vec2 {
     }
 }
 
-impl Mul<f32> for Vec2 {
+impl core::ops::Mul<f32> for Vec2 {
     type Output = Self;
 
     #[inline(always)]
@@ -59,7 +57,7 @@ impl Mul<f32> for Vec2 {
     }
 }
 
-impl Div<f32> for Vec2 {
+impl core::ops::Div<f32> for Vec2 {
     type Output = Self;
 
     #[inline(always)]
@@ -87,7 +85,7 @@ impl Vec3 {
     }
 }
 
-impl Add for Vec3 {
+impl core::ops::Add for Vec3 {
     type Output = Self;
 
     #[inline(always)]
@@ -100,7 +98,7 @@ impl Add for Vec3 {
     }
 }
 
-impl Sub for Vec3 {
+impl core::ops::Sub for Vec3 {
     type Output = Self;
 
     #[inline(always)]
@@ -113,7 +111,7 @@ impl Sub for Vec3 {
     }
 }
 
-impl Mul<f32> for Vec3 {
+impl core::ops::Mul<f32> for Vec3 {
     type Output = Self;
 
     #[inline(always)]
@@ -126,7 +124,7 @@ impl Mul<f32> for Vec3 {
     }
 }
 
-impl Div<f32> for Vec3 {
+impl core::ops::Div<f32> for Vec3 {
     type Output = Self;
 
     #[inline(always)]
@@ -156,7 +154,7 @@ impl Vec4 {
     }
 }
 
-impl Add for Vec4 {
+impl core::ops::Add for Vec4 {
     type Output = Self;
 
     #[inline(always)]
@@ -170,7 +168,7 @@ impl Add for Vec4 {
     }
 }
 
-impl Sub for Vec4 {
+impl core::ops::Sub for Vec4 {
     type Output = Self;
 
     #[inline(always)]
@@ -184,7 +182,7 @@ impl Sub for Vec4 {
     }
 }
 
-impl Mul<f32> for Vec4 {
+impl core::ops::Mul<f32> for Vec4 {
     type Output = Self;
 
     #[inline(always)]
@@ -198,7 +196,7 @@ impl Mul<f32> for Vec4 {
     }
 }
 
-impl Div<f32> for Vec4 {
+impl core::ops::Div<f32> for Vec4 {
     type Output = Self;
 
     #[inline(always)]
