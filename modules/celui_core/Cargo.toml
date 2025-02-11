@@ -8,10 +8,12 @@ license.workspace = true
 [features]
 std = [
     "celui_sys/std",
-    "celui_math/std"
+    "celui_collections/std",
+    "celui_math/std",
 ]
 
 [dependencies]
 celui_sys = { path = "../celui_sys/" }
+celui_collections = { path = "../celui_collections/" }
 celui_math = { path = "../celui_math/" }
 celui_renderer = { path = "../celui_renderer/" }

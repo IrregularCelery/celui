@@ -5,4 +5,10 @@ authors.workspace = true
 edition.workspace = true
 license.workspace = true
 
+[features]
+std = [
+    "celui_sys/std",
+]
+
 [dependencies]
+celui_sys = { path = "../celui_sys/" }
