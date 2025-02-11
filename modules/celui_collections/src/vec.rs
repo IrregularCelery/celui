@@ -110,6 +110,14 @@ impl<T> Vec<T> {
         self.len == 0
     }
 
+    /// Fills the vector with elements by cloning `value`.
+    pub fn fill(&mut self, value: T)
+    where
+        T: Clone,
+    {
+        self.as_slice_mut().fill(value);
+    }
+
     /// Removes all elements from the vector.
     #[inline]
     pub fn clear(&mut self) {
