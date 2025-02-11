@@ -79,6 +79,19 @@ impl<T> Vec<T> {
         unsafe { Some(core::ptr::read(self.ptr.add(old_len - 1))) }
     }
 
+    /// Sets the length of the vector.
+    ///
+    /// # Safety
+    /// The caller must ensure:
+    /// - `new_len` does not exceed the vector's capacity
+    /// - All elements between old length and new length are initialized
+    #[inline]
+    pub unsafe fn set_len(&mut self, new_len: usize) {
+        debug_assert!(new_len <= self.capacity());
+
+        self.len = new_len;
+    }
+
     /// Returns the number of elements in the vector.
     #[inline(always)]
     pub const fn len(&self) -> usize {
