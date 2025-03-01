@@ -19,6 +19,7 @@ To lay the groundwork for these goals, the workspace is organized into multiple 
 - **[celui_core](/modules/celui_core/)**: The heart of the system. Provides essential abstractions, utilities, and the core foundation.
 - **[celui_sys](/modules/celui_sys/)**: Internal module providing a platform-agnostic abstraction for core system functions (memory, time, file system, threading, etc.). Requires a user-provided backend when the `std` feature is disabled.
 - **[celui_math](/modules/celui_math/)**: Provides mathematical utilities and data structures, such as vectors, matrices, and geometric functions.
+- **[celui_backend](/modules/celui_backend/)**: Defines platform-agnostic interfaces for windowing and graphics, enabling integration with various backend APIs.
 - **[celui_renderer](/modules/celui_renderer/)**: Handles the rendering of primitives like triangles, rectangles, circles, and text.
 - **[dev](/modules/dev/)**: A binary module used for experimenting with the library and testing in general.
 
