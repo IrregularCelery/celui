@@ -5,6 +5,7 @@ members = [
     "modules/celui_sys",
     "modules/celui_collections",
     "modules/celui_math",
+    "modules/celui_backend",
     "modules/celui_renderer",
 
     "modules/dev",
