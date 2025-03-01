@@ -12,7 +12,7 @@ Celui (short for **Celery UI**, and pronounced playfully as _"Celewy"_ :D) is a 
 
 > While these goals shape the project's direction, _Celui_ is still in its earliest stages! 💡
 
-## Modules 📦
+## 📦 Modules
 
 To lay the groundwork for these goals, the workspace is organized into multiple modules:
 
@@ -25,7 +25,7 @@ To lay the groundwork for these goals, the workspace is organized into multiple 
 
 You can use the modules individually or combine them based on your project's needs. However, the core module contains most of what'll you need. 🧩
 
-## Getting Started 🏁
+## 🏁 Getting Started
 
 Since this project is just beginning, there isn't any ready-to-use code yet. However, you can still set up the workspace and follow along as development progresses:
 
@@ -36,6 +36,6 @@ git clone https://github.com/IrregularCelery/celui.git
 cd celui
 ```
 
-## License 📜
+## 📜 License
 
 **Celui** is released under the [MIT License](/LICENSE).
