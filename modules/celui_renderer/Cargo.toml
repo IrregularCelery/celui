@@ -14,3 +14,4 @@ std = [
 [dependencies]
 celui_collections = { path = "../celui_collections/" }
 celui_math = { path = "../celui_math/" }
+celui_backend = { path = "../celui_backend/" }
