@@ -38,6 +38,3 @@ impl TextureRegistry {
         self.map.clear();
     }
 }
-
-// TODO: Move this to the backend crate
-pub trait GraphicsBackend {}
