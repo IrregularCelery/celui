@@ -12,3 +12,10 @@ pub(crate) struct Vertex {
 // ------------------------------ TextureId -------------------------------- //
 
 pub(crate) struct TextureId(pub usize);
+
+pub(crate) struct Texture {
+    id: TextureId,
+}
+
+// TODO: Move this to the backend crate
+pub trait GraphicsBackend {}
