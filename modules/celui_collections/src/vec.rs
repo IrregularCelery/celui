@@ -1,10 +1,166 @@
 use celui_sys::alloc::{alloc_many, dealloc_many};
 
-// --------------------------------- Vec ----------------------------------- //
-
 const MIN_NON_ZERO_CAPACITY: usize = 4; // Start with a slightly larger minimum capacity
 
-/// A dynamic, heap-allocated array type
+// ------------------------------- IntoIter -------------------------------- //
+
+/// An owning iterator that consumes the `Vec` and returns its elements.
+pub struct IntoIter<T> {
+    ptr: *mut T,
+    len: usize,
+    capacity: usize,
+    current: usize,
+}
+
+impl<T> Drop for IntoIter<T> {
+    fn drop(&mut self) {
+        // Drop remaining elements
+        while self.current < self.len {
+            // SAFETY: `self.current` is guaranteed to be within bounds
+            unsafe {
+                core::ptr::drop_in_place(self.ptr.add(self.current));
+
+                self.current += 1;
+            }
+        }
+
+        if !self.ptr.is_null() && self.capacity != 0 {
+            // SAFETY: `self.ptr` is a valid pointer, and `self.capacity` is not 0
+            unsafe { dealloc_many(self.ptr, self.capacity) };
+        }
+    }
+}
+
+impl<T> Iterator for IntoIter<T> {
+    type Item = T;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.current >= self.len {
+            return None;
+        }
+
+        // SAFETY: `self.current` is guaranteed to be within bounds
+        let item = unsafe { core::ptr::read(self.ptr.add(self.current)) };
+
+        self.current += 1;
+
+        Some(item)
+    }
+}
+
+// --------------------------------- Iter ---------------------------------- //
+
+/// An iterator over the elements of a `Vec`.
+pub struct Iter<'a, T> {
+    ptr: *const T,
+    end: *const T,
+
+    _marker: core::marker::PhantomData<&'a T>,
+}
+
+impl<'a, T> Iter<'a, T> {
+    #[inline]
+    pub fn new(vec: &'a Vec<T>) -> Self {
+        let ptr = vec.ptr;
+        let len = vec.len;
+
+        // SAFETY: `vec` is a valid Vec<T>, therefore its fields `ptr` and `len` are valid as well
+        unsafe {
+            Self {
+                ptr,
+                end: ptr.add(len),
+
+                _marker: core::marker::PhantomData,
+            }
+        }
+    }
+}
+
+impl<'a, T> Iterator for Iter<'a, T> {
+    type Item = &'a T;
+
+    #[inline]
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.ptr == self.end {
+            return None;
+        }
+
+        // SAFETY: `self.ptr` is a valid pointer for reads up to `self.end` elements
+        unsafe {
+            let item = &*self.ptr;
+
+            self.ptr = self.ptr.add(1);
+
+            Some(item)
+        }
+    }
+
+    #[inline]
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        let remaining = (self.end as usize - self.ptr as usize) / core::mem::size_of::<T>();
+
+        (remaining, Some(remaining))
+    }
+}
+
+// ------------------------------- IterMut --------------------------------- //
+
+/// A mutable iterator over the elements of a `Vec`.
+pub struct IterMut<'a, T> {
+    ptr: *mut T,
+    end: *mut T,
+
+    _marker: core::marker::PhantomData<&'a T>,
+}
+
+impl<'a, T> IterMut<'a, T> {
+    #[inline]
+    pub fn new(vec: &'a mut Vec<T>) -> Self {
+        let ptr = vec.ptr;
+        let len = vec.len;
+
+        // SAFETY: `vec` is a valid Vec<T>, therefore its fields `ptr` and `len` are valid as well
+        unsafe {
+            Self {
+                ptr,
+                end: ptr.add(len),
+
+                _marker: core::marker::PhantomData,
+            }
+        }
+    }
+}
+
+impl<'a, T> Iterator for IterMut<'a, T> {
+    type Item = &'a mut T;
+
+    #[inline]
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.ptr == self.end {
+            return None;
+        }
+
+        // SAFETY: `self.ptr` is a valid pointer for reads up to `self.end` elements
+        unsafe {
+            let item = &mut *self.ptr;
+
+            self.ptr = self.ptr.add(1);
+
+            Some(item)
+        }
+    }
+
+    #[inline]
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        let remaining = (self.end as usize - self.ptr as usize) / core::mem::size_of::<T>();
+
+        (remaining, Some(remaining))
+    }
+}
+
+// --------------------------------- Vec ----------------------------------- //
+
+/// A dynamic, heap-allocated array type.
 ///
 /// Provides methods for adding, removing, and accessing elements efficiently.
 ///
@@ -378,158 +534,5 @@ impl<T> core::ops::IndexMut<usize> for Vec<T> {
 
         // SAFETY: `index` is guaranteed to be within bounds
         unsafe { &mut *self.ptr.add(index) }
-    }
-}
-
-// ------------------------------- IntoIter -------------------------------- //
-
-pub struct IntoIter<T> {
-    ptr: *mut T,
-    len: usize,
-    capacity: usize,
-    current: usize,
-}
-
-impl<T> Drop for IntoIter<T> {
-    fn drop(&mut self) {
-        // Drop remaining elements
-        while self.current < self.len {
-            // SAFETY: `self.current` is guaranteed to be within bounds
-            unsafe {
-                core::ptr::drop_in_place(self.ptr.add(self.current));
-
-                self.current += 1;
-            }
-        }
-
-        if !self.ptr.is_null() && self.capacity != 0 {
-            // SAFETY: `self.ptr` is a valid pointer, and `self.capacity` is not 0
-            unsafe { dealloc_many(self.ptr, self.capacity) };
-        }
-    }
-}
-
-impl<T> Iterator for IntoIter<T> {
-    type Item = T;
-
-    fn next(&mut self) -> Option<Self::Item> {
-        if self.current >= self.len {
-            return None;
-        }
-
-        // SAFETY: `self.current` is guaranteed to be within bounds
-        let item = unsafe { core::ptr::read(self.ptr.add(self.current)) };
-
-        self.current += 1;
-
-        Some(item)
-    }
-}
-
-// --------------------------------- Iter ---------------------------------- //
-
-pub struct Iter<'a, T> {
-    ptr: *const T,
-    end: *const T,
-
-    _marker: core::marker::PhantomData<&'a T>,
-}
-
-impl<'a, T> Iter<'a, T> {
-    #[inline]
-    pub fn new(vec: &'a Vec<T>) -> Self {
-        let ptr = vec.ptr;
-        let len = vec.len;
-
-        // SAFETY: `vec` is a valid Vec<T>, therefore its fields `ptr` and `len` are valid as well
-        unsafe {
-            Self {
-                ptr,
-                end: ptr.add(len),
-
-                _marker: core::marker::PhantomData,
-            }
-        }
-    }
-}
-
-impl<'a, T> Iterator for Iter<'a, T> {
-    type Item = &'a T;
-
-    #[inline]
-    fn next(&mut self) -> Option<Self::Item> {
-        if self.ptr == self.end {
-            return None;
-        }
-
-        // SAFETY: `self.ptr` is a valid pointer for reads up to `self.end` elements
-        unsafe {
-            let item = &*self.ptr;
-
-            self.ptr = self.ptr.add(1);
-
-            Some(item)
-        }
-    }
-
-    #[inline]
-    fn size_hint(&self) -> (usize, Option<usize>) {
-        let remaining = (self.end as usize - self.ptr as usize) / core::mem::size_of::<T>();
-
-        (remaining, Some(remaining))
-    }
-}
-
-// ------------------------------- IterMut --------------------------------- //
-
-pub struct IterMut<'a, T> {
-    ptr: *mut T,
-    end: *mut T,
-
-    _marker: core::marker::PhantomData<&'a T>,
-}
-
-impl<'a, T> IterMut<'a, T> {
-    #[inline]
-    pub fn new(vec: &'a mut Vec<T>) -> Self {
-        let ptr = vec.ptr;
-        let len = vec.len;
-
-        // SAFETY: `vec` is a valid Vec<T>, therefore its fields `ptr` and `len` are valid as well
-        unsafe {
-            Self {
-                ptr,
-                end: ptr.add(len),
-
-                _marker: core::marker::PhantomData,
-            }
-        }
-    }
-}
-
-impl<'a, T> Iterator for IterMut<'a, T> {
-    type Item = &'a mut T;
-
-    #[inline]
-    fn next(&mut self) -> Option<Self::Item> {
-        if self.ptr == self.end {
-            return None;
-        }
-
-        // SAFETY: `self.ptr` is a valid pointer for reads up to `self.end` elements
-        unsafe {
-            let item = &mut *self.ptr;
-
-            self.ptr = self.ptr.add(1);
-
-            Some(item)
-        }
-    }
-
-    #[inline]
-    fn size_hint(&self) -> (usize, Option<usize>) {
-        let remaining = (self.end as usize - self.ptr as usize) / core::mem::size_of::<T>();
-
-        (remaining, Some(remaining))
     }
 }
