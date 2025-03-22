@@ -206,6 +206,70 @@ impl<T> Vec<T> {
         }
     }
 
+    /// Returns the number of elements in the vector.
+    #[inline(always)]
+    pub const fn len(&self) -> usize {
+        self.len
+    }
+
+    /// Returns the capacity of the vector.
+    #[inline(always)]
+    pub const fn capacity(&self) -> usize {
+        self.capacity
+    }
+
+    /// Returns `true` if the vector contains no elements.
+    #[inline(always)]
+    pub const fn is_empty(&self) -> bool {
+        self.len == 0
+    }
+
+    /// Returns a reference to the element at the given index, or `None` if out of bounds.
+    #[inline]
+    pub fn get(&self, index: usize) -> Option<&T> {
+        if index < self.len {
+            // SAFETY: `index` is guaranteed to be within bounds
+            return Some(unsafe { &*self.ptr.add(index) });
+        }
+
+        None
+    }
+
+    /// Returns a mutable reference to the element at the given index, or `None` if out of bounds.
+    #[inline]
+    pub fn get_mut(&mut self, index: usize) -> Option<&mut T> {
+        if index < self.len {
+            // SAFETY: `index` is guaranteed to be within bounds
+            return Some(unsafe { &mut *self.ptr.add(index) });
+        }
+
+        None
+    }
+
+    /// Returns a slice containing all elements of the vector.
+    #[inline]
+    pub fn as_slice(&self) -> &[T] {
+        // SAFETY: `self.len` ensures we only create a valid slice within the bounds
+        unsafe { core::slice::from_raw_parts(self.ptr, self.len) }
+    }
+
+    /// Returns a mutable slice containing all elements of the vector.
+    #[inline]
+    pub fn as_slice_mut(&mut self) -> &mut [T] {
+        // SAFETY: `self.len` ensures we only create a valid slice within the bounds
+        unsafe { core::slice::from_raw_parts_mut(self.ptr, self.len) }
+    }
+
+    /// Returns an iterator over the slice.
+    pub fn iter(&self) -> Iter<'_, T> {
+        Iter::new(self)
+    }
+
+    /// Returns a mutable iterator over the slice.
+    pub fn iter_mut(&mut self) -> IterMut<T> {
+        IterMut::new(self)
+    }
+
     /// Adds an element to the end of the vector, growing its capacity if needed.
     #[inline]
     pub fn push(&mut self, value: T) {
@@ -233,73 +297,6 @@ impl<T> Vec<T> {
 
         // SAFETY: `self.len` is gauranteed to be more than 0
         unsafe { Some(core::ptr::read(self.ptr.add(old_len - 1))) }
-    }
-
-    /// Sets the length of the vector.
-    ///
-    /// # Safety
-    /// The caller must ensure:
-    /// - `new_len` does not exceed the vector's capacity
-    /// - All elements between old length and new length are initialized
-    #[inline]
-    pub unsafe fn set_len(&mut self, new_len: usize) {
-        debug_assert!(new_len <= self.capacity());
-
-        self.len = new_len;
-    }
-
-    /// Returns the number of elements in the vector.
-    #[inline(always)]
-    pub const fn len(&self) -> usize {
-        self.len
-    }
-
-    /// Returns the capacity of the vector.
-    #[inline(always)]
-    pub const fn capacity(&self) -> usize {
-        self.capacity
-    }
-
-    /// Returns `true` if the vector contains no elements.
-    #[inline(always)]
-    pub const fn is_empty(&self) -> bool {
-        self.len == 0
-    }
-
-    /// Fills the vector with elements by cloning `value`.
-    pub fn fill(&mut self, value: T)
-    where
-        T: Clone,
-    {
-        self.as_slice_mut().fill(value);
-    }
-
-    /// Removes all elements from the vector.
-    #[inline]
-    pub fn clear(&mut self) {
-        self.truncate(0);
-    }
-
-    /// Returns a reference to the element at the given index, or `None` if out of bounds.
-    #[inline]
-    pub fn get(&self, index: usize) -> Option<&T> {
-        if index < self.len {
-            // SAFETY: `index` is guaranteed to be within bounds
-            return Some(unsafe { &*self.ptr.add(index) });
-        }
-
-        None
-    }
-
-    /// Returns a mutable reference to the element at the given index, or `None` if out of bounds.
-    #[inline]
-    pub fn get_mut(&mut self, index: usize) -> Option<&mut T> {
-        if index < self.len {
-            // SAFETY: `index` is guaranteed to be within bounds
-            return Some(unsafe { &mut *self.ptr.add(index) });
-        }
-
-        None
     }
 
     /// Inserts an element at the given index, shifting subsequent elements to the right.
@@ -343,6 +340,20 @@ impl<T> Vec<T> {
 
             value
         }
+    }
+
+    /// Fills the vector with elements by cloning `value`.
+    pub fn fill(&mut self, value: T)
+    where
+        T: Clone,
+    {
+        self.as_slice_mut().fill(value);
+    }
+
+    /// Removes all elements from the vector.
+    #[inline]
+    pub fn clear(&mut self) {
+        self.truncate(0);
     }
 
     /// Extends the vector with the contents of an iterator.
@@ -404,30 +415,20 @@ impl<T> Vec<T> {
         }
     }
 
-    /// Returns a slice containing all elements of the vector.
+    /// Sets the length of the vector.
+    ///
+    /// # Safety
+    /// The caller must ensure:
+    /// - `new_len` does not exceed the vector's capacity
+    /// - All elements between old length and new length are initialized
     #[inline]
-    pub fn as_slice(&self) -> &[T] {
-        // SAFETY: `self.len` ensures we only create a valid slice within the bounds
-        unsafe { core::slice::from_raw_parts(self.ptr, self.len) }
+    pub unsafe fn set_len(&mut self, new_len: usize) {
+        debug_assert!(new_len <= self.capacity());
+
+        self.len = new_len;
     }
 
-    /// Returns a mutable slice containing all elements of the vector.
-    #[inline]
-    pub fn as_slice_mut(&mut self) -> &mut [T] {
-        // SAFETY: `self.len` ensures we only create a valid slice within the bounds
-        unsafe { core::slice::from_raw_parts_mut(self.ptr, self.len) }
-    }
-
-    /// Returns an iterator over the slice.
-    pub fn iter(&self) -> Iter<'_, T> {
-        Iter::new(self)
-    }
-
-    /// Returns a mutable iterator over the slice.
-    pub fn iter_mut(&mut self) -> IterMut<T> {
-        IterMut::new(self)
-    }
-
+    /// Increases the vector's capacity to accommodate at least `minimum_capacity` elements.
     #[inline]
     fn grow(&mut self, minimum_capacity: usize) {
         let new_capacity = if self.capacity == 0 {
