@@ -1,5 +1,5 @@
 use celui_backend::GraphicsBackend;
-use celui_collections::collections::Vec;
+use celui_collections::Vec;
 
 use crate::types::{TextureRegistry, Vertex};
 

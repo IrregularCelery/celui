@@ -1,3 +1,4 @@
+use celui_collections::{HashMap, Vec};
 use celui_math::{Color, Vec2};
 
 // -------------------------------- Vertex --------------------------------- //
@@ -28,7 +29,7 @@ pub(crate) struct TextureRegistry {
     ///
     /// **Key:** Backend texture id.
     /// **Value:** Texture slot index.
-    map: std::collections::HashMap<u32, usize>, // TODO: USE `celui_collections::HashMap`
+    map: HashMap<u32, usize>,
 }
 
 impl TextureRegistry {
