@@ -166,6 +166,8 @@ impl<'a, T> Iterator for IterMut<'a, T> {
 ///
 /// # Example
 /// ```
+/// use celui_collections::Vec;
+///
 /// let mut vec = Vec::new();
 /// vec.push(69);
 /// assert_eq!(vec.pop(), Some(69));
@@ -356,6 +358,21 @@ impl<T> Vec<T> {
         self.truncate(0);
     }
 
+    /// Sets the length of the vector.
+    ///
+    /// # SAFETY
+    /// The caller must ensure:
+    /// - `new_len` does not exceed the vector's capacity
+    /// - All elements at `new_len..old_len` are initialized
+    /// - The elements at `new_len..old_len` will be leaked if the length is being truncated,
+    ///   resources must be properly cleaned up if necessary
+    #[inline]
+    pub unsafe fn set_len(&mut self, new_len: usize) {
+        debug_assert!(new_len <= self.capacity());
+
+        self.len = new_len;
+    }
+
     /// Extends the vector with the contents of an iterator.
     pub fn extend<I: IntoIterator<Item = T>>(&mut self, iter: I) {
         let iter = iter.into_iter();
@@ -413,19 +430,6 @@ impl<T> Vec<T> {
         if new_capacity > self.capacity {
             self.grow(new_capacity);
         }
-    }
-
-    /// Sets the length of the vector.
-    ///
-    /// # Safety
-    /// The caller must ensure:
-    /// - `new_len` does not exceed the vector's capacity
-    /// - All elements between old length and new length are initialized
-    #[inline]
-    pub unsafe fn set_len(&mut self, new_len: usize) {
-        debug_assert!(new_len <= self.capacity());
-
-        self.len = new_len;
     }
 
     /// Increases the vector's capacity to accommodate at least `minimum_capacity` elements.
